@@ -23,11 +23,7 @@ import { BNB_NATIVE_SOURCE_ASSET, SOL_WRAP_BNB } from "./const";
  * @param owner string -> publickey as string of the current connected wallet account
  *  */  
 export const VerifyOrCreateSolanaATA = async(connection:Connection, provider:any, owner:any) => {
-  // const updateFlowState = useFlowStore.use.addStep()
-  // const updateFlowStateRes = useFlowStore.use.addStepResult()
-  // const updateATA = useBridgeInfo.use.updateTargetATA()
   /* retrieve ATA for this publickey + token address pair */
-
   const  associatedTokenAccount = await getAssociatedTokenAddress(new PublicKey(SOL_WRAP_BNB),new PublicKey(owner))
     
   // updateFlowStateRes("ATA: "+associatedTokenAccount.toString())
@@ -66,16 +62,36 @@ export const GenerateATA = async(connection:Connection, provider:any, owner:any)
 }
 
 export const VerifyATA = async(connection:Connection, provider:any, owner:any, ATA:PublicKey) => {
-  let accountStatus = "exist"
+  let accountStatus = "Exist"
 
   try{
     const account = await getAccount(connection, ATA);
   }
   catch(error){
     if (error instanceof TokenAccountNotFoundError || error instanceof TokenInvalidAccountOwnerError) {
-      accountStatus = "none"
+      accountStatus = "not exist"
     }
-    else accountStatus = "unknown"
+    else accountStatus = "unknown error"
   }
   return accountStatus
+}
+
+export const SuggestAddATA = async(connection:Connection, provider:any, owner:any, ATA:PublicKey) => {
+  return new Promise(async(resolve,reject)=>{
+    try{
+      const createTokenAccountInstruction = await createAssociatedTokenAccountInstruction(new PublicKey(owner), ATA, new PublicKey(owner), new PublicKey(SOL_WRAP_BNB))
+      const createTokenAccountTransaction = new Transaction().add(createTokenAccountInstruction)    
+      let blockhash = (await connection.getLatestBlockhash('finalized')).blockhash;
+      createTokenAccountTransaction.recentBlockhash = blockhash;
+      createTokenAccountTransaction.feePayer = new PublicKey(owner)
+  
+      const { signature } = await provider.signAndSendTransaction(createTokenAccountTransaction)
+      await connection.getSignatureStatus(signature);
+      resolve("success")
+    }
+    catch(error:any){
+      console.log("Create ata failed with error: ", error);
+      reject("Error: "+error)
+    }
+  })
 }

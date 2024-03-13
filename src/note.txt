@@ -1,0 +1,1 @@
+source asset = address of token ( if token) else chain id

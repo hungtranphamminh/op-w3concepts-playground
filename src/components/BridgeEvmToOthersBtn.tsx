@@ -17,7 +17,7 @@ import {} from "ethers";
 import { parseSequencesFromLogEth } from "@/utils/converter";
 import { GetSignedVAA } from "@/utils/vaa/ownSignVAA";
 
-export default function TransferButton() {
+export default function BridgeFromEvmButton() {
   const targetATA = useBridgeInfo.use.targetATA();
   const amount = useBridgeInfo.use.amount();
   const targetChainId = useBridgeInfo.use.targetChainId();
@@ -66,9 +66,7 @@ export default function TransferButton() {
     const MMSigner = MMprovider.getSigner();
 
     /* TODO: handle reject case */
-
     const txResponse = await MMSigner.sendTransaction(populatedBridge);
-
     console.log("tx response: ", txResponse);
     updateFlowStateRes(
       "Bridge contract hash: " + AddressShortener(txResponse.hash, 5)

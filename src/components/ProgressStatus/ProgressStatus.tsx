@@ -11,14 +11,14 @@ export default function ProgressStatusInfo() {
   return (
     <div className=" border-r-2 border-slate-400 w-[800px] flex flex-col items-center justify-start">
       {/* verifying section */}
-      <div className="flex items-start w-full">
+      {/* <div className="flex items-start w-full">
         <div className="w-1/2">
           <SolAccSetupProgress />
         </div>
         <div className="w-1/2">
           <EvmAccSetupProgress />
         </div>
-      </div>
+      </div> */}
       <div className="w-full flex flex-col justify-start items-start gap-2">
         {stepStatus &&
           stepStatus.map((step, index) => {
