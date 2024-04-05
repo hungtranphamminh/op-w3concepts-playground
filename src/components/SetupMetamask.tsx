@@ -15,7 +15,7 @@ export default function SetupEVM() {
     <>
       {hasProvider && (
         <button
-          className="px-[12px] py-[6px] border rounded-lg text-base border-violet-600 w-[200px]"
+          className="px-[12px] py-[6px] border text-base bg-white w-[200px]"
           onClick={SetupEVMAccount}
         >
           {!wallet.accounts[0]

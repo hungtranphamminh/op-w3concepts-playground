@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { MetaMaskContextProvider } from "@/hooks/useMetamask";
+import SetupEVM from "@/components/SetupMetamask";
+import SetupSolana from "@/components/SetupSolana";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +19,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <MetaMaskContextProvider>
+          <main className="w-full flex">
+            {children}
+            <div className="flex flex-col items-center gap-10 h-screen p-10 bg-sky-950">
+              <SetupEVM />
+              <SetupSolana />
+            </div>
+          </main>
+        </MetaMaskContextProvider>
+      </body>
     </html>
   );
 }

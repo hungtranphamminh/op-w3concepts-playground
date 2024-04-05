@@ -12,10 +12,6 @@ export default function TestBridge() {
       <ProgressStatusInfo />
       {/* Flow simulator */}
       <div className="flex flex-col items-center justify-start w-[250px]">
-        <div className="flex flex-col items-center mb-20 gap-10">
-          <SetupEVM />
-          <SetupSolana />
-        </div>
         <TWTextInput />
         {/* Basic wormhole flow */}
         <TransferButton />
